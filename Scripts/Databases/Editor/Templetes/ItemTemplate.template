@@ -1,0 +1,30 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+#region Additional usings
+##USINGS##
+#endregion Additional usings
+
+namespace Databases.#DATABASENAME# {
+    public class #TABLENAME# : DBItem {
+
+##COLUMN_PROPERTIES##
+
+        public #TABLENAME#(){
+        }
+
+        public #TABLENAME#(#TABLENAME# other){
+##COPY_CONSTRUCTOR##
+        }
+
+        public override void Init(object[] datas) {
+##COLUMN_INITIALIZE##
+        }
+
+        #region Class-specific Codes
+##ORIGINAL##
+        #endregion Class-specific Codes
+
+    }
+}

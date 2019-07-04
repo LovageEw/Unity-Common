@@ -1,0 +1,46 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+#region Additional usings
+##USINGS##
+#endregion Additional usings
+
+namespace Databases.#DATABASENAME# {
+    public class #TABLENAME#DAO : DAOBase {
+
+        protected List<#TABLENAME#> #STABLENAME#List = new List<#TABLENAME#>();
+
+        public override int ColumnCount
+        {
+            get
+            {
+                return #COLUMNCOUNT#;
+            }
+        }
+
+        public override string TableName
+        {
+            get
+            {
+                return "#TABLENAMEORIGINAL#";
+            }
+        }
+
+        protected override void InitTableItems(List<object[]> valueList) {
+            foreach (var values in valueList) {
+                var #STABLENAME# = new #TABLENAME#();
+                #STABLENAME#.Init(values);
+                #STABLENAME#List.Add(#STABLENAME#);
+            }
+        }
+
+        public IEnumerable<#TABLENAME#> List => #STABLENAME#List;
+
+        #region Class-specific Codes
+##ORIGINAL##
+        #endregion Class-specific Codes
+
+    }
+
+}

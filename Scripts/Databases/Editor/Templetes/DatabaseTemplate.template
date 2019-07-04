@@ -1,0 +1,34 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+#region Additional usings
+##USINGS##
+#endregion Additional usings
+
+namespace Databases.#DATABASENAME# {
+
+    public class #DATABASENAME#Database : SqliteDatabase {
+
+        protected override string DatabasePath
+        {
+            get
+            {
+                return "URI=file:" + Application.persistentDataPath + "/#DATABASE_FILENAME#";
+            }
+        }
+
+        protected override string ResourceFilePath
+        {
+            get
+            {
+                return "#ASSETPATH#";
+            }
+        }
+
+        #region Class-specific Codes
+##ORIGINAL##
+        #endregion Class-specific Codes
+
+    }
+}
