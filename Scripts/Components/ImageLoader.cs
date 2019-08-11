@@ -12,7 +12,6 @@ namespace UIs
     public class ImageLoader : MonoBehaviour
     {
         [SerializeField] private bool loadOnStart = true;
-        [SerializeField] private string assetBundleFolderName = "AssetBundle";
         [SerializeField] private ImageLoadMode loadMode;
         [SerializeField] private string categoryPath;
         [SerializeField] private string fileName;
