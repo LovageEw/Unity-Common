@@ -1,4 +1,4 @@
-Shader "Sprites/Whiten"
+Shader "UI/Whiten"
 {
 	Properties
 	{

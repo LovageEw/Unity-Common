@@ -1,4 +1,4 @@
-﻿Shader "Custom/2D/InvertColor"
+﻿Shader "UI/InvertColor"
 {
     Properties
     {
