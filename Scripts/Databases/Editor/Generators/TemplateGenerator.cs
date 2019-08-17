@@ -28,6 +28,7 @@ namespace Databases.AutoGenerates {
         public void GenerateClass() {
             var originalRegion = PreserveRegion("Class-specific Codes");
             var usingRegion = PreserveRegion("Additional usings");
+            var initRegion = PreserveRegion("Additional Initializer");
             
             CopyFile();
 
@@ -35,6 +36,7 @@ namespace Databases.AutoGenerates {
             ReplaceFileString((str) => {
                 str = str.Replace("#DATABASENAME#", DatabaseName);
                 str = str.Replace("##USINGS##", usingRegion);
+                str = str.Replace("##INITIALIZE##", initRegion);
                 return str.Replace("##ORIGINAL##", originalRegion);
             });
 

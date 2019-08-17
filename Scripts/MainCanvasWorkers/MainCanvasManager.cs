@@ -44,6 +44,8 @@ namespace Managers
 
         private void AdjustScreenSize(float offsetUpper, float offsetLower)
         {
+            if (upperRect == null || lowerRect == null) { return; }
+
             AdjustedUpper = offsetUpper;
             AdjustedLower = offsetLower;
             upperRect.anchoredPosition = new Vector2(upperRect.anchoredPosition.x, -offsetUpper);
