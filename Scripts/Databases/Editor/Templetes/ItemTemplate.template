@@ -17,14 +17,14 @@ namespace Databases.#DATABASENAME#
         public #TABLENAME#(#TABLENAME# other)
         {
 ##COPY_CONSTRUCTOR##
+            #region Additional Copy Constructor
+##COPYCONST##
+            #endregion Additional Copy Constructor
         }
 
         public override void Init(object[] datas) 
         {
 ##COLUMN_INITIALIZE##
-            #region Additional Initializer
-##INITIALIZE##
-            #endregion Additional Initializer
         }
         
         #region Class-specific Codes

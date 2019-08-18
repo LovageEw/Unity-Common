@@ -2,32 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 #region Additional usings
 ##USINGS##
 #endregion Additional usings
 
-namespace Databases.#DATABASENAME# {
-    public class #TABLENAME#DAO : DAOBase {
-
+namespace Databases.#DATABASENAME# 
+{
+    public class #TABLENAME#DAO : DAOBase 
+    {
         protected List<#TABLENAME#> #STABLENAME#List = new List<#TABLENAME#>();
+        public override int ColumnCount => #COLUMNCOUNT#;
+        public override string TableName => "#TABLENAMEORIGINAL#";
 
-        public override int ColumnCount
+        protected override void InitTableItems(List<object[]> valueList) 
         {
-            get
-            {
-                return #COLUMNCOUNT#;
-            }
-        }
-
-        public override string TableName
-        {
-            get
-            {
-                return "#TABLENAMEORIGINAL#";
-            }
-        }
-
-        protected override void InitTableItems(List<object[]> valueList) {
             foreach (var values in valueList) {
                 var #STABLENAME# = new #TABLENAME#();
                 #STABLENAME#.Init(values);
@@ -40,7 +29,5 @@ namespace Databases.#DATABASENAME# {
         #region Class-specific Codes
 ##ORIGINAL##
         #endregion Class-specific Codes
-
     }
-
 }
