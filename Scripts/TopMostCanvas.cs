@@ -24,8 +24,14 @@ namespace Generals {
             }
         }
 
-        private void Start() {
+        private void Start()
+        {
             DontDestroyOnLoad(this);
+            AdjustOffset();
+        }
+
+        public void AdjustOffset()
+        {
             fitter.offsetMin = new Vector2(fitter.offsetMin.x, MainCanvasManager.Instance.AdjustedLower);
             fitter.offsetMax = new Vector2(fitter.offsetMax.x, -MainCanvasManager.Instance.AdjustedUpper);
         }

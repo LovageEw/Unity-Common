@@ -1,4 +1,5 @@
 ﻿using System;
+using Generals;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
@@ -29,6 +30,24 @@ namespace Managers
         protected override void Awake()
         {
             base.Awake();
+            AdjustScreenSize();
+        }
+        
+        public void SetOffset(float value, bool isTop)
+        {
+            if (isTop)
+            {
+                upperMinHeight = value;
+            }
+            else
+            {
+                lowerMinHeight = value;
+            }
+            AdjustScreenSize();
+        }
+        
+        private void AdjustScreenSize()
+        {
             if (ScreenX * desiredAspectRatio.y >= ScreenY * desiredAspectRatio.x)
             {
                 AdjustScreenSize(upperMinHeight, lowerMinHeight);
@@ -38,7 +57,7 @@ namespace Managers
                 var adjustTotalHeight = ScreenY - ScreenX * desiredAspectRatio.y / desiredAspectRatio.x;
                 var upper = Math.Max(adjustTotalHeight / 2.0f, upperMinHeight);
                 var lower = Math.Max(adjustTotalHeight - upper, lowerMinHeight);
-                AdjustScreenSize(upper,lower);
+                AdjustScreenSize(upper, lower);
             }
         }
 
@@ -54,6 +73,11 @@ namespace Managers
             lowerRect.offsetMax = new Vector2(lowerRect.offsetMax.x, offsetLower);
             sizeFitRect.offsetMin = new Vector2(sizeFitRect.offsetMin.x, offsetLower);
             sizeFitRect.offsetMax = new Vector2(sizeFitRect.offsetMax.x, -offsetUpper);
+
+            if (TopMostCanvas.IsExist)
+            {
+                TopMostCanvas.Instance.AdjustOffset();
+            }
         }
 
         public float GetRatioToDesired()
