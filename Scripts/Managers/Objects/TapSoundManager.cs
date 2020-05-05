@@ -6,29 +6,43 @@ using UnityEngine.EventSystems;
 using UIs;
 using UnityEngine.UI;
 
-namespace Managers {
-    public class TapSoundManager : MonoBehaviour {
-        [SerializeField] AudioClip tapButton = null;
-        [SerializeField] AudioClip tapReturn = null;
+namespace Managers
+{
+    public class TapSoundManager : MonoBehaviour
+    {
+        [SerializeField] private AudioClip tapButton = null;
+        [SerializeField] private AudioClip tapReturn = null;
 
-        void Start(){
-            this.UpdateAsObservable ()
-                .Where (_ => Input.GetMouseButtonDown (0) && EventSystem.current != null && EventSystem.current.currentSelectedGameObject != null)
-                .Select (_ => EventSystem.current.currentSelectedGameObject.GetComponent<TapSound> ())
-                .Subscribe (ts => {
-                    if (ts != null) {
+        private void Start()
+        {
+            this.UpdateAsObservable()
+                .Where(_ => Input.GetMouseButtonDown(0))
+                .Where(_ => EventSystem.current != null)
+                .Where(_ => EventSystem.current.currentSelectedGameObject != null)
+                .Select(_ => EventSystem.current.currentSelectedGameObject.GetComponent<TapSound>())
+                .Subscribe(ts =>
+                {
+                    if (ts != null)
+                    {
                         ts.PlayTapSound();
-                    } else {
+                    }
+                    else
+                    {
                         PlayDefaultSe(EventSystem.current.currentSelectedGameObject);
                     }
-            });
+                });
         }
 
-        void PlayDefaultSe(GameObject clickedObject) {
+        private void PlayDefaultSe(GameObject clickedObject)
+        {
             var button = clickedObject.GetComponent<Button>();
-            if (button != null && button.targetGraphic != null && button.targetGraphic.mainTexture.name == "return") {
-                SoundManager.Instance.PlaySe(tapReturn );
-            } else if (button != null) {
+            if (button != null && button.targetGraphic != null && button.targetGraphic.mainTexture.name == "return" &&
+                tapReturn != null)
+            {
+                SoundManager.Instance.PlaySe(tapReturn);
+            }
+            else if (button != null && tapButton != null)
+            {
                 SoundManager.Instance.PlaySe(tapButton);
             }
         }

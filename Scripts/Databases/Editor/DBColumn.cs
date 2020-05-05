@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Databases.AutoGenerates {
 
-    public class DBColumn {
+    public struct DBColumn {
         public string TypeName { get; set; }
         public string KeyName { get; set; }
     }

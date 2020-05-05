@@ -1,0 +1,13 @@
+using Amazon;
+
+namespace Networks
+{
+    public static class NetworkSetting
+    {
+        public const string ServiceName = "service-name";
+        public const string Staging = "stage";
+        public const string IdPool = "region:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+        
+        public static readonly RegionEndpoint Region = RegionEndpoint.GetBySystemName(RegionEndpoint.#REGION#.SystemName);
+    }
+}

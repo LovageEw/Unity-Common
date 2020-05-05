@@ -1,0 +1,51 @@
+﻿namespace Constants
+{
+    public static class GameMessages
+    {
+        public const string LanguageChange = "<<OnChangeLanguage>>\n<<BackTitle>>";
+        public const string PurchaseSucceeded = "<<purchased>>";
+        public const string CheckInSucceeded = "<<afterplay>>";
+        public const string CommercialToGetPoint = "<<videoad>>\n(<<OkToPlay>>)";
+        public const string CommercialToContinue = "<<CommercialToContinue>>\n(<<OkToPlay>>)";
+        public const string AskResume = "<<continue1>> \n <<continue2>>";
+        public const string RequestReview = "<<RequestReview>>";
+        public const string PrometheusNoTarget = "<<PrometheusNoTarget>>";
+        public const string ArtemisNoTarget = "<<ArtemisNoTarget>>";
+        public const string UseItem = "<<UseItem>>";
+    }
+    
+    public static class ErrorHeader
+    {
+        public const string NetworkError = "<<NetworkError>>";
+        public const string CommercialError = "<<CommercialError>>";
+    }
+
+    public static class ErrorBody
+    {
+        public const string ErrorQuit = "<<error1>>";
+        public const string ErrorReturnTitle = "<<error1>>\n<<BackTitle>>";
+        public const string NetworkFailForceRetry = "<<networkFail>>\n<<retry>>";
+        public const string NetworkFailAskRetry = "<<networkFail>>\n<<askRetry>>";
+        public const string NetworkFailInClient = "<<networkFail>>\n<<CheckNetworkStatus>>";
+        public const string GameClearWrongId = "<<GameClearWrongId>>\n<<BackTitle>>";
+        public const string LackOfPoint = "<<lackOfPoint>>";
+        public const string StoryNotClear = "<<StoryNotClear>>";
+        public const string CommercialError = "<<CommercialErrorBody>>";
+        public const string CommercialChecked = "<<CommercialChecked>>";
+        public const string ItemMissing = "<<ItemMissing>>";
+#if UNITY_IOS
+        public const string OldVersion = "<<NewVersion>>\n<<UpdateAppStore>>";
+#else
+        public const string OldVersion = "<<NewVersion>>\n<<UpdateGooglePlay>>";
+#endif
+    }
+    
+    public static class ErrorServerString
+    {
+        public const string GameClearWrongId = "Wrong Id.";
+        public const string LackOfPoint = "Not enough points.";
+        public const string StoryNotClear = "Story not cleared.";
+        public const string AlreadyChecked = "Already Checked.";
+        public const string ItemMissing = "Item is missing.";
+    }
+}

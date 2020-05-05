@@ -32,6 +32,8 @@ namespace Generals {
 
         public void AdjustOffset()
         {
+            if (!MainCanvasManager.IsExist) { return; }
+
             fitter.offsetMin = new Vector2(fitter.offsetMin.x, MainCanvasManager.Instance.AdjustedLower);
             fitter.offsetMax = new Vector2(fitter.offsetMax.x, -MainCanvasManager.Instance.AdjustedUpper);
         }
