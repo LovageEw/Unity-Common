@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Databases.AutoGenerates {
-    public class ItemGenerator : TemplateGenerator {
+    public class ItemGenerator : DatabaseTemplateGeneratorBase {
         public ItemGenerator(string outputFolderPath, string outputFilePath, string databaseName) 
             : base(outputFolderPath, outputFilePath, databaseName) {
         }
@@ -24,7 +24,8 @@ namespace Databases.AutoGenerates {
 
         public string TableName { get; set; }
 
-        protected override string ReplaceTempletes(string fileTexts) {
+        protected override string ReplaceTemplates(string fileTexts) {
+            fileTexts = base.ReplaceTemplates(fileTexts);
             fileTexts = fileTexts.Replace("##COLUMN_PROPERTIES##", GenerateColumnProperty());
             fileTexts = fileTexts.Replace("##COLUMN_INITIALIZE##", GenerateColumnInitializer());
             fileTexts = fileTexts.Replace("##COPY_CONSTRUCTOR##", GenerateCopyConstructor());

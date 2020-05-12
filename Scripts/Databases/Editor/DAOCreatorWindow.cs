@@ -20,10 +20,6 @@ namespace Databases.AutoGenerates {
         DatabaseType databaseType = DatabaseType.Master;
 
         private void OnGUI() {
-            GUILayout.Space(10);
-            EditorGUILayout.LabelField("  DAO Generator Setting");
-            GUILayout.Space(10);
-
             database = (TextAsset)EditorGUILayout.ObjectField("Database File", database, typeof(TextAsset), true);
             databaseType = (DatabaseType)EditorGUILayout.EnumPopup("Type", (System.Enum)databaseType);
             textField = (DefaultAsset)EditorGUILayout.ObjectField("Output Folder", textField, typeof(DefaultAsset), true);
@@ -53,6 +49,8 @@ namespace Databases.AutoGenerates {
             dao.ResourcePath = AssetDatabase.GetAssetPath(database).Split('/').SkipWhile(x => x != "Resources").Skip(1).Aggregate((a, b) => a + "\\" + b);
 
             dao.Execute(AssetDatabase.GetAssetPath(textField), databaseName, db);
+            
+            AssetDatabase.Refresh();
         }
 
         void CreateAccessor(string databaseName , string assetPath) {

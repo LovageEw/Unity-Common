@@ -5,7 +5,7 @@ using System.Linq;
 using System;
 
 namespace Databases.AutoGenerates {
-    public class DAOGenerator : TemplateGenerator {
+    public class DAOGenerator : DatabaseTemplateGeneratorBase {
         public DAOGenerator(string outputFolderPath, string outputFilePath, string databaseName, int columnCount, string tableName) 
             : base(outputFolderPath, outputFilePath, databaseName) {
             ColumnCount = columnCount;
@@ -23,7 +23,8 @@ namespace Databases.AutoGenerates {
         public int ColumnCount { get; private set; }
         public string TableName { get; private set; }
 
-        protected override string ReplaceTempletes(string fileTexts) {
+        protected override string ReplaceTemplates(string fileTexts) {
+            fileTexts = base.ReplaceTemplates(fileTexts);
             fileTexts = fileTexts.Replace("#TABLENAMEORIGINAL#", TableName);
             fileTexts = fileTexts.Replace("#TABLENAME#", TableName.ToCamelCase());
             fileTexts = fileTexts.Replace("#STABLENAME#", TableName.ToCamelCase().ToLower());

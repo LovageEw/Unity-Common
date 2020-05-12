@@ -6,46 +6,51 @@ using System.IO;
 using System;
 using System.Text;
 
-namespace Databases.AutoGenerates {
+namespace Commons.Editors.AutoGenerates {
 
     public abstract class TemplateGenerator {
 
         protected abstract string FileName { get; }
 
-        protected string DatabaseName { get; private set; }
+        private readonly string templatePath;
+        private readonly string outputPath;
 
-        string templatePath;
-        string outputPath;
-
-        public TemplateGenerator(string outputFolderPath, string outputFilePath, string databaseName) {
+        protected TemplateGenerator(string outputFolderPath, string outputFilePath) {
             outputPath = outputFolderPath + "/" + outputFilePath;
-            DatabaseName = databaseName;
 
             var allFiles = Directory.GetFiles(Directory.GetCurrentDirectory() , "*.template" , SearchOption.AllDirectories);
             templatePath = allFiles.FirstOrDefault(x => x.Contains(FileName + ".template"));
         }
 
         public void GenerateClass() {
-            var originalRegion = PreserveRegion("Class-specific Codes");
-            var usingRegion = PreserveRegion("Additional usings");
-            var copyConstRegion = PreserveRegion("Additional Copy Constructor");
+            var preserverRegionList = new Dictionary<string,string>();
+            foreach (var (replacer, regionNotation) in GetPreservedRegion())
+            {
+                var preserved = PreserveRegion(regionNotation);
+                preserverRegionList.Add(replacer, preserved);
+            }
             
             CopyFile();
 
-            ReplaceFileString(ReplaceTempletes);
-            ReplaceFileString((str) => {
-                str = str.Replace("#DATABASENAME#", DatabaseName);
-                str = str.Replace("##USINGS##", usingRegion);
-                str = str.Replace("##COPYCONST##", copyConstRegion);
-                return str.Replace("##ORIGINAL##", originalRegion);
+            ReplaceFileString(ReplaceTemplates);
+            ReplaceFileString((str) =>
+            {
+                return preserverRegionList.Aggregate(str, (current, item) => current.Replace(item.Key, item.Value));
             });
 
             ReplaceFileString(UnifyEscape);
         }
 
-        protected abstract string ReplaceTempletes(string fileTexts);
+        protected virtual IEnumerable<(string, string)> GetPreservedRegion()
+        {
+            yield return ("##USINGS##", "Additional usings");
+            yield return ("##COPYCONST##", "Additional Copy Constructor");
+            yield return ("##ORIGINAL##", "Class-specific Codes");
+        }
+        
+        protected abstract string ReplaceTemplates(string fileTexts);
 
-        protected string PreserveRegion(string regionName) {
+        private string PreserveRegion(string regionName) {
             if (!File.Exists(outputPath)) {
                 return "";
             }
@@ -64,16 +69,17 @@ namespace Databases.AutoGenerates {
             return str.Replace("\r\n", "\n").Split('\n');
         }
 
-        private string JoinByEscape(IEnumerable<string> strArray) {
-            if (strArray.Count() == 0) {
+        private static string JoinByEscape(IEnumerable<string> strArray) {
+            var array = strArray as string[] ?? strArray.ToArray();
+            if (!array.Any()) {
                 return "";
-            }else if(strArray.Count() == 1) {
-                return strArray.ElementAt(0) + "";
+            }else if(array.Count() == 1) {
+                return array.ElementAt(0) + "";
             }
-            return strArray.Aggregate((a, b) => a + "\n" + b);
+            return array.Aggregate((a, b) => a + "\n" + b);
         }
 
-        void CopyFile() {
+        private void CopyFile() {
             UnityConsole.Log("Create File :"  + outputPath);
             if (File.Exists(outputPath)) {
                 File.Delete(outputPath);
@@ -83,11 +89,11 @@ namespace Databases.AutoGenerates {
         
         private void ReplaceFileString(Func<string, string> replaceFunc) {
             string texts = "";
-            using (StreamReader sr = new StreamReader(outputPath , Encoding.UTF8)) {
+            using (var sr = new StreamReader(outputPath , Encoding.UTF8)) {
                 texts = sr.ReadToEnd();
             }
             texts = replaceFunc(texts);
-            using (StreamWriter sw = new StreamWriter(outputPath)) {
+            using (var sw = new StreamWriter(outputPath)) {
                 sw.Write(texts);
             }
         }

@@ -51,7 +51,9 @@ namespace Databases.AutoGenerates {
                     .SelectMany(x => x.Split(')'));
                 string tableName = GetTableName(queryList);
                 foreach (var column in MakeColumnList(queryList)) {
-                    var columnData = column.SkipWhile(x => string.IsNullOrEmpty(x)).ToArray();
+                    var columnData = column.SkipWhile(string.IsNullOrEmpty).ToArray();
+                    if (columnData.Length < 2) { continue; }
+
                     columnList.Add(new DBColumn() { KeyName = columnData[0], TypeName = columnData[1] });
                 }
 

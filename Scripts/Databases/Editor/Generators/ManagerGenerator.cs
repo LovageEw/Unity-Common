@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Databases.AutoGenerates {
-    public class ManagerGenerator : TemplateGenerator {
+    public class ManagerGenerator : DatabaseTemplateGeneratorBase {
         public ManagerGenerator(string outputFolderPath, string outputFilePath, string databaseName)
             : base(outputFolderPath, outputFilePath, databaseName) {
         }
@@ -21,7 +21,8 @@ namespace Databases.AutoGenerates {
         public List<string> TableNames { get; set; }
 
 
-        protected override string ReplaceTempletes(string fileTexts) {
+        protected override string ReplaceTemplates(string fileTexts) {
+            fileTexts = base.ReplaceTemplates(fileTexts);
             fileTexts = fileTexts.Replace("##DAO_PROPERTIES##", GenerateDAOProperty());
             return fileTexts.Replace("##DAO_INIT_REGION##" , TableNames.Select(GenerateInitCode).Aggregate((a,b) => a + b));
         }

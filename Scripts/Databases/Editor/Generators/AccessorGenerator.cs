@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Databases.AutoGenerates {
-    public class AccessorGenerator : TemplateGenerator {
+    public class AccessorGenerator : DatabaseTemplateGeneratorBase {
 
         public AccessorGenerator(string outputFolderPath, string outputFilePath, string databaseName) 
             : base(outputFolderPath, outputFilePath, databaseName) {
@@ -22,7 +22,8 @@ namespace Databases.AutoGenerates {
             }
         }
 
-        protected override string ReplaceTempletes(string fileTexts) {
+        protected override string ReplaceTemplates(string fileTexts) {
+            fileTexts = base.ReplaceTemplates(fileTexts);
             fileTexts = fileTexts.Replace("#DATABASE_FILENAME#" , DatabaseFileName);
             fileTexts = fileTexts.Replace("#ASSETPATH#", AssetPath);
             return fileTexts;
