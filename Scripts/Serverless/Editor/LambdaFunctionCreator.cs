@@ -11,7 +11,7 @@ namespace Common.Scripts.Serverless.Editor
 {
     public class LambdaFunctionCreator : EditorWindow
     {
-        [MenuItem("Tools/Lambda/Create AWS Lambda Functions")]
+        [MenuItem("Tools/KakuriyoCommons/Lambda")]
         private static void ShowWindow()
         {
             var window = GetWindow<LambdaFunctionCreator>();
@@ -26,6 +26,8 @@ namespace Common.Scripts.Serverless.Editor
             EditorGUILayout.HelpBox(
                 "Create AWS Lambda access resulting class by declarations in which implemented ILambdaModel.",
                 MessageType.Info, true);
+            EditorGUILayout.LabelField("■ Create AWS Lambda Functions", new GUIStyle{fontStyle = FontStyle.Bold});
+            GUILayout.Space(10);
             outputDirectory = (DefaultAsset)EditorGUILayout.ObjectField(
                 "Output Directory", outputDirectory, typeof(DefaultAsset), true);
 

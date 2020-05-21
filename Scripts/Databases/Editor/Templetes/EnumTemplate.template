@@ -1,0 +1,7 @@
+namespace Databases.#DATABASENAME# 
+{
+    public enum #ENUMNAME#
+    {
+##DEFINITIONS##
+    }
+}

@@ -1,4 +1,5 @@
-﻿using Mono.Data.SqliteClient;
+﻿using System;
+using Mono.Data.SqliteClient;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -21,7 +22,7 @@ namespace Databases {
         /// </summary>
         /// <param name="path"></param>
         public virtual void Init() {
-            TextAsset resource = Resources.Load(ResourceFilePath.RemoveString(".bytes")) as TextAsset;
+            var resource = Resources.Load(ResourceFilePath.RemoveString(".bytes")) as TextAsset;
             if (IsRequireReload(resource)) {
                 CopyDatabase(resource);
             }
@@ -30,7 +31,7 @@ namespace Databases {
         }
 
         void SetupDatabase() {
-            UnityConsole.Log(string.Format("Open Database ({0}).", this.GetType().FullName));
+            UnityConsole.Log($"Open Database ({this.GetType().FullName}).");
             connection = new SqliteConnection(DatabasePath);
             command = connection.CreateCommand();
         }
@@ -66,17 +67,18 @@ namespace Databases {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dao"></param> 
+        /// <param name="query"></param>
+        /// <param name="columnCount"></param>
         /// <returns></returns>
-        public List<object[]> SelectAll(DAOBase dao) {
+        public List<object[]> Query(string query, int columnCount) {
             var items = new List<object[]>();
 
             connection.Open();
             
-            command.CommandText = "select * from " + dao.TableName +" ;";
+            command.CommandText = query;
             reader = command.ExecuteReader();
             while (reader.Read()) {
-                var item = Enumerable.Range(0, dao.ColumnCount)
+                var item = Enumerable.Range(0, columnCount)
                     .Select(reader.GetValue)
                     .ToArray();
                 items.Add(item);
@@ -87,6 +89,11 @@ namespace Databases {
             return items;
         }
 
+        public List<object[]> SelectAll(DAOBase dao)
+        {
+            var query = $"select * from {dao.TableName};";
+            return Query(query, dao.ColumnCount);
+        }
 
         /// <summary>
         /// 
@@ -99,15 +106,13 @@ namespace Databases {
         /// 
         /// </summary>
         private void Close() {
-            UnityConsole.Log(string.Format("Close Database ({0})." , this.GetType().FullName));
+            UnityConsole.Log($"Close Database ({this.GetType().FullName}).");
             if (reader != null && !reader.IsClosed) {
                 reader.Close();
             }
             reader = null;
 
-            if (command != null) {
-                command.Dispose();
-            }
+            command?.Dispose();
             command = null;
 
             if (connection != null && connection.State != ConnectionState.Closed) {

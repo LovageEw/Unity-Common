@@ -13,6 +13,7 @@ namespace Databases.AutoGenerates {
         public override string TableName { get { return "sqlite_master"; } }
 
         public string ResourcePath { get; internal set; }
+        public List<string> TableNameList { get; } = new List<string>();
 
         string outputFolderName;
         string databaseName;
@@ -24,14 +25,12 @@ namespace Databases.AutoGenerates {
             Init(db);
         }
 
-
         protected override void InitTableItems(List<object[]> values) {
             ExecuteGenerateClass(values);
         }
 
         private void ExecuteGenerateClass(List<object[]> values) {
             var managerGen = new ManagerGenerator(outputFolderName , databaseName + "DBManager.cs" , databaseName);
-            var tableNameList = new List<string>();
 
             var queries = values.Where(x => x[4] != null)
                 .Select(x => {
@@ -59,14 +58,14 @@ namespace Databases.AutoGenerates {
 
                 if (columnList.Count > 0) {
                     string camelTableName = tableName.ToCamelCase();
-                    tableNameList.Add(camelTableName);
+                    TableNameList.Add(camelTableName);
                     GenerateDAOClass(tableName, columnList.Count());
                     GenerateItemClass(camelTableName, columnList);
                 }
             }
 
-            if (tableNameList.Count > 0) {
-                managerGen.TableNames = tableNameList;
+            if (TableNameList.Count > 0) {
+                managerGen.TableNames = TableNameList;
                 managerGen.GenerateClass();
             }
         }
