@@ -76,7 +76,7 @@ namespace Databases.AutoGenerates
 
         private void Execute()
         {
-            string databaseName = Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(database));
+            string databaseName = Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(database)).ToCamelCase();
             string assetPath = AssetDatabase.GetAssetPath(database).RemoveString("Assets/Resources/");
             CreateAccessor(databaseName, assetPath);
 
@@ -93,7 +93,7 @@ namespace Databases.AutoGenerates
         
         private void GenerateEnumDefinition(string tableName)
         {
-            string databaseName = Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(database));
+            string databaseName = Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(database)).ToCamelCase();
             string assetPath = AssetDatabase.GetAssetPath(database).RemoveString("Assets/Resources/");
             var db = new DBForDAOCreator(databaseName, assetPath);
 
