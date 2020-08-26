@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Random = UnityEngine.Random;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class IEnumerableExtenisons {
@@ -25,5 +26,10 @@ public static class IEnumerableExtenisons {
                 yield return new Tuple<T1, T2>(item1, item2);
             }
         }
+    }
+
+    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> self)
+    {
+        return self.OrderBy(_ => Random.Range(int.MinValue, int.MaxValue));
     }
 }
