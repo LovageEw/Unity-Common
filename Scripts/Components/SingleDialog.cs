@@ -1,5 +1,6 @@
 ﻿using System;
 using Generals;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +8,9 @@ namespace UIs {
     public class SingleDialog : MonoBehaviour
     {
         [SerializeField] private Image shadow;
-        [SerializeField] private Text mainText;
-        [SerializeField] private Text headerText;
-        [SerializeField] private Text okText;
+        [SerializeField] private TextMeshProUGUI mainText;
+        [SerializeField] private TextMeshProUGUI headerText;
+        [SerializeField] private TextMeshProUGUI okText;
         
         private Action onOk;
         private float animationTime;

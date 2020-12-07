@@ -1,0 +1,50 @@
+using System;
+using System.Net;
+using Databases.Transaction;
+using UnityEngine;
+#RequiredUsing#
+#region Additional usings
+##USINGS##
+#endregion Additional usings
+
+namespace Networks.NetworkingResults
+{
+    public class #ModelName#NetworkingResult : NetworkingResultBase
+    {
+        public override string MethodName => "#FunctionName#";
+        private readonly #LambdaBody# lambdaRequest;
+        public Action<#Model#> OnResponseArrive { get; set; }
+        
+        public #ModelName#NetworkingResult(#LambdaBody# lambdaRequest)
+        {
+            this.lambdaRequest = lambdaRequest;
+        }
+
+        public override object GetLambdaEventSource()
+        {
+            return lambdaRequest;
+        }
+
+        public override bool Deserialize(string json)
+        {
+            var model = JsonUtility.FromJson<#Model#>(json);
+            #region Additional post-Deserialize process
+##Post-Deserialize##
+            #endregion Additional post-Deserialize process
+            
+            OnResponseArrive.SafeAction(model);
+            return true;
+        }
+        
+        public override void OnFunctionError(ErrorResponse response)
+        {
+            #region Define OnFunctionError
+##OnFunctionError##
+            #endregion Define OnFunctionError
+        }
+        
+        #region Class-specific Codes
+##ORIGINAL##
+        #endregion Class-specific Codes
+    }
+}

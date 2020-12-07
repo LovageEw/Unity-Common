@@ -5,16 +5,15 @@ using Networks;
 
 namespace Common.Scripts.Serverless.Editor.Generators
 {
-    public class LambdaResultGenerator : TemplateGenerator
+    
+    public abstract class LambdaResultGeneratorBase : TemplateGenerator
     {
         private readonly string functionName;
         private readonly string modelName;
         private readonly string lambdaBody;
         private readonly ILambdaModel lambdaModel;
-
-        protected override string FileName => "NetworkingResultTemplate";
         
-        public LambdaResultGenerator(ILambdaModel lambdaModel, string outputFolderPath)
+        public LambdaResultGeneratorBase(ILambdaModel lambdaModel, string outputFolderPath)
             : base(outputFolderPath, GetOutputFilePath(lambdaModel))
         {
             this.lambdaModel = lambdaModel;

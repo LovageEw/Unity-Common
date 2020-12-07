@@ -10,7 +10,7 @@ namespace Databases.AutoGenerates
 {
     public class DAOCreatorWindow : EditorWindow
     {
-        [MenuItem("Tools/KakuriyoCommons/SQLite")]
+        [MenuItem("Tools/NordicOceanCommons/SQLite")]
         static void Open()
         {
             GetWindow<DAOCreatorWindow>("DAO Generator");

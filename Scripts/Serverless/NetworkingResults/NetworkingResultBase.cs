@@ -38,7 +38,7 @@ namespace Networks.NetworkingResults
             }
         }
 
-        private void OnServerError()
+        public void OnServerError()
         {
             ForceRetry();
         }

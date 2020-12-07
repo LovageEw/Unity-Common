@@ -11,7 +11,7 @@ namespace Common.Scripts.Serverless.Editor
 {
     public class LambdaFunctionCreator : EditorWindow
     {
-        [MenuItem("Tools/KakuriyoCommons/Lambda")]
+        [MenuItem("Tools/NordicOceanCommons/Lambda")]
         private static void ShowWindow()
         {
             var window = GetWindow<LambdaFunctionCreator>();
@@ -20,6 +20,7 @@ namespace Common.Scripts.Serverless.Editor
         }
 
         private DefaultAsset outputDirectory = null;
+        private LambdaLanguage language;
         
         private void OnGUI()
         {
@@ -30,6 +31,7 @@ namespace Common.Scripts.Serverless.Editor
             GUILayout.Space(10);
             outputDirectory = (DefaultAsset)EditorGUILayout.ObjectField(
                 "Output Directory", outputDirectory, typeof(DefaultAsset), true);
+            language =  (LambdaLanguage) EditorGUILayout.EnumPopup("Type", language);
 
             if (outputDirectory == null) {return;}
             GUILayout.Space(15);
@@ -51,7 +53,6 @@ namespace Common.Scripts.Serverless.Editor
             var types = AppDomain.CurrentDomain.GetAssemblies();
             return types
                 .SelectMany(x => x.GetTypes())
-                .Where(x => x.Name == "GetUser")
                 .Where(x => x.GetTypeInfo().ImplementedInterfaces.Contains(typeof(ILambdaModel)))
                 .Select(Activator.CreateInstance);
             
@@ -61,7 +62,15 @@ namespace Common.Scripts.Serverless.Editor
         {
             foreach (var model in models.Select(x => x as ILambdaModel))
             {
-                var generator = new LambdaResultGenerator(model, AssetDatabase.GetAssetPath(outputDirectory));
+                LambdaResultGeneratorBase generator;
+                if (language == LambdaLanguage.CSharp)
+                {
+                    generator = new LambdaResultGeneratorCSharp(model, AssetDatabase.GetAssetPath(outputDirectory));
+                }
+                else
+                {
+                    generator = new LambdaResultGeneratorJs(model, AssetDatabase.GetAssetPath(outputDirectory));
+                }
                 generator.GenerateClass();
             }
         }
