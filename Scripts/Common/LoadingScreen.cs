@@ -17,6 +17,7 @@ namespace Menus
     [RequireComponent(typeof(CanvasGroup))]
     public class LoadingScreen : SingletonMonoBehaviour<LoadingScreen>
     {
+        [SerializeField] [Range(0.0f, 1.0f)] private float fadeTime = 0.5f;
         [SerializeField] private Image loadingImage;
 
         public bool IsShow { get; private set; }
@@ -40,7 +41,7 @@ namespace Menus
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
             IsShow = true;
-            canvasGroup.DOFade(1f, 0.5f).SetEase(Ease.Linear);
+            canvasGroup.DOFade(1f, fadeTime).SetEase(Ease.Linear);
         }
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -62,7 +63,7 @@ namespace Menus
         private void ShowPage()
         {
             var canvasGroup = GetComponent<CanvasGroup>();
-            canvasGroup.DOFade(0f, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
+            canvasGroup.DOFade(0f, fadeTime).SetEase(Ease.Linear).OnComplete(() =>
             {
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;

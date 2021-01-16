@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Net;
 using System.Text;
 using Amazon.Lambda;
@@ -7,6 +8,7 @@ using Amazon.Lambda.Model;
 using Databases.Transaction;
 using Networks.NetworkingResults;
 using UnityEngine;
+using Utf8Json;
 
 namespace Networks
 {
@@ -22,20 +24,30 @@ namespace Networks
             lambdaClient = new AmazonLambdaClient(holder.Credentials, NetworkSetting.Region);
         }
 
-        public void Invoke(NetworkingResultBase result)
+        public void Invoke(NetworkingResultBase result, bool isStream = false)
         {
-            var eventJson = JsonUtility.ToJson(result.GetLambdaEventSource());
-            UnityConsole.Log(eventJson);
-            Invoke(FunctionName(result.MethodName), eventJson , result);
+            var functionName = FunctionName(result.MethodName);
+            InvokeRequest request;
+            if (isStream)
+            {
+                var stream = JsonSerializer.Serialize(result.GetLambdaEventSource());
+                request = new InvokeRequest {FunctionName = functionName, PayloadStream = new MemoryStream(stream)};
+                UnityConsole.Log($"Request : {functionName}\nPayloadStream : [binary]");
+            }
+            else
+            {
+                var payload = JsonSerializer.ToJsonString(result.GetLambdaEventSource());
+                request = new InvokeRequest {FunctionName = functionName, Payload = payload};
+                UnityConsole.Log($"Request : {functionName}\nPayload : {payload}");
+            }
+            Invoke(request , result);
         }
 
-        private void Invoke(string functionName, string payload, NetworkingResultBase result)
+        private void Invoke(InvokeRequest request, NetworkingResultBase result)
         {
-            var request = new InvokeRequest {FunctionName = functionName, Payload = payload};
-            UnityConsole.Log($"Request : {request.FunctionName}\nPayload : {payload}");
             lambdaClient.InvokeAsync(request, response =>
             {
-                result.IsCompleted = true;
+                result.IsCompleted.Value = true;
                 if (response.Exception == null && response.Response.StatusCode == (int)HttpStatusCode.OK)
                 {
                     OnSucceeded(response.Response, result);
@@ -57,7 +69,7 @@ namespace Networks
             var decoded = Encoding.ASCII.GetString(response.Payload.ToArray());
             UnityConsole.Log("Lambda Succeeded.\n" + decoded);
             
-            var innerError = JsonUtility.FromJson<InnerErrorResponse>(decoded);
+            var innerError = JsonSerializer.Deserialize<InnerErrorResponse>(response.Payload);
             if (innerError.IsErrorState())
             {
                 UnityConsole.Log($"Error occured in Function {result.MethodName}.");
@@ -68,7 +80,7 @@ namespace Networks
             if (result.Deserialize(decoded))
             {
                 UnityConsole.Log($"Function {result.MethodName} Succeeded.");
-                result.IsSucceeded = true;
+                result.IsSucceeded.Value = true;
             }
             else
             {

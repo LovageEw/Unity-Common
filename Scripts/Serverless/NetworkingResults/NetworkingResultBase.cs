@@ -15,8 +15,8 @@ namespace Networks.NetworkingResults
     public abstract class NetworkingResultBase
     {
         public abstract string MethodName { get; }
-        public bool IsCompleted { get; set; }
-        public bool IsSucceeded { get; set; }
+        public ReactiveProperty<bool> IsCompleted { get; } = new ReactiveProperty<bool>();
+        public ReactiveProperty<bool> IsSucceeded { get; } = new ReactiveProperty<bool>();
         public abstract object GetLambdaEventSource();
 
         public abstract void OnFunctionError(ErrorResponse response);
@@ -79,14 +79,12 @@ namespace Networks.NetworkingResults
     {
         public static void AddOnCompleted(this NetworkingResultBase result, GameObject parent, Action onCompleted)
         {
-            result.ObserveEveryValueChanged(x => x.IsCompleted).First(x => x).TakeUntilDestroy(parent)
-                .Subscribe(_ => onCompleted());
+            result.IsCompleted.Where(x => x).Take(1).TakeUntilDestroy(parent).Subscribe(_ => onCompleted());
         }
         
         public static void AddOnSucceeded(this NetworkingResultBase result, GameObject parent, Action onSucceeded)
         {
-            result.ObserveEveryValueChanged(x => x.IsSucceeded).First(x => x).TakeUntilDestroy(parent)
-                .Subscribe(_ => onSucceeded());
+            result.IsSucceeded.Where(x => x).Take(1).TakeUntilDestroy(parent).Subscribe(_ => onSucceeded());
         }
     }
 }

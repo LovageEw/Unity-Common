@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using Databases.Transaction;
 using UnityEngine;
+using Utf8Json;
 #RequiredUsing#
 #region Additional usings
 ##USINGS##
@@ -27,7 +28,7 @@ namespace Networks.NetworkingResults
 
         public override bool Deserialize(string json)
         {
-            var model = JsonUtility.FromJson<#Model#>(json);
+            var model = JsonSerializer.Deserialize<#Model#>(json);
             #region Additional post-Deserialize process
 ##Post-Deserialize##
             #endregion Additional post-Deserialize process
