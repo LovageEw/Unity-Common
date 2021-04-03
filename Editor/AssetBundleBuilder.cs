@@ -11,8 +11,10 @@ public class AssetBundleBuilder : MonoBehaviour
         // Put the bundles in a folder called "ABs" within the Assets folder.
 #if UNITY_IOS
         BuildPipeline.BuildAssetBundles("Assets/StreamingAssets", BuildAssetBundleOptions.None, BuildTarget.iOS);
+#elif UNITY_EDITOR_OSX
+        BuildPipeline.BuildAssetBundles("Assets/StreamingAssets", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSX);
 #else
-        BuildPipeline.BuildAssetBundles("Assets/Projects/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.Android);
+        BuildPipeline.BuildAssetBundles("Assets/StreamingAssets", BuildAssetBundleOptions.None, BuildTarget.Android);
 #endif
     }
 }
