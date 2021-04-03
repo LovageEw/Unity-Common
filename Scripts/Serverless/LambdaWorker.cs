@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NO_NETWORKING
+using System;
 using System.Data;
 using System.IO;
 using System.Net;
@@ -96,3 +97,4 @@ namespace Networks
         }
     }
 }
+#endif

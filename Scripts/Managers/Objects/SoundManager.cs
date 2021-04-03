@@ -101,12 +101,12 @@ namespace Managers
             
             availableSe.clip = clip;
             availableSe.PlayOneShot(clip);
-            StartCoroutine(SoundStopTask(availableSe));
+            // StartCoroutine(SoundStopTask(availableSe));
         }
 
-        private void StopSe(AudioClip clip)
+        public void StopSe(AudioClip clip)
         {
-            foreach (var audioSource in seList.Where(x => x.clip == clip ))
+            foreach (var audioSource in seList.Where(x => x.clip == clip))
             {
                 audioSource.Stop();
             }

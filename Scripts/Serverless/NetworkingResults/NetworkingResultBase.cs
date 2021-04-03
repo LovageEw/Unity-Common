@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NO_NETWORKING
+using System;
 using System.Net;
 using System.Text;
 using Amazon.Lambda.Model;
@@ -88,3 +89,4 @@ namespace Networks.NetworkingResults
         }
     }
 }
+#endif

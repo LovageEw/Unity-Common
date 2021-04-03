@@ -1,4 +1,6 @@
-﻿using Amazon;
+﻿#if !NO_NETWORKING
+
+using Amazon;
 using Amazon.CognitoIdentity;
 
 namespace Networks
@@ -16,3 +18,5 @@ namespace Networks
         }
     }
 }
+
+#endif
