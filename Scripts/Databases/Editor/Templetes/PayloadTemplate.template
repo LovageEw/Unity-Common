@@ -1,0 +1,28 @@
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Databases.Master
+{
+    [Serializable]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public class #TABLENAME#ArrayPayload
+    {
+        public #TABLENAME#Payload[] Items;
+    }
+    
+    [Serializable]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public class #TABLENAME#Payload
+    {
+##COLUMN_FIELDS##
+        public #TABLENAME#Payload(#TABLENAME# model)
+        {
+##COLUMN_INITIALIZE##
+        }
+
+        public object[] ToObjectArray()
+        {
+            return new object[] {##COLUMNS##};
+        }
+    }
+}

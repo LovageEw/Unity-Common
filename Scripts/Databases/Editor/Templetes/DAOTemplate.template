@@ -15,6 +15,7 @@ namespace Databases.#DATABASENAME#
         public override int ColumnCount => #COLUMNCOUNT#;
         public override string TableName => "#TABLENAMEORIGINAL#";
 
+        public void InitTableItems(List<#TABLENAME#> list) => #STABLENAME#List = list;
         protected override void InitTableItems(List<object[]> valueList) 
         {
             foreach (var values in valueList) {

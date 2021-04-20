@@ -6,9 +6,7 @@ namespace Commons.Scripts.Utility
     {
         public static void Open(string url)
         {
-#if UNITY_EDITOR
-            Application.OpenURL(url);
-#elif UNITY_WEBGL
+#if UNITY_WEBGL
             Application.ExternalEval($"window.open('{url}','_blank')");
 #else
             Application.OpenURL(url);

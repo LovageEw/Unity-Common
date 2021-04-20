@@ -10,8 +10,6 @@ namespace Databases.AutoGenerates {
             : base(outputFolderPath, outputFilePath, databaseName) {
         }
 
-        private const string TypeNameBoolean = "BOOLEAN";
-
         protected override string FileName
         {
             get
@@ -31,14 +29,6 @@ namespace Databases.AutoGenerates {
             fileTexts = fileTexts.Replace("##COPY_CONSTRUCTOR##", GenerateCopyConstructor());
             return fileTexts.Replace("#TABLENAME#", TableName);
         }
-
-        Dictionary<string, string> typeReplaceDict = new Dictionary<string, string>() {
-            { "INTEGER" , "int" },
-            { "TEXT"    , "string" },
-            { "REAL"    , "double" },
-            { TypeNameBoolean , "bool" },
-            { "VARCHAR" , "string" },
-        };
 
         private string GenerateColumnProperty() {
             string propertyString = "";

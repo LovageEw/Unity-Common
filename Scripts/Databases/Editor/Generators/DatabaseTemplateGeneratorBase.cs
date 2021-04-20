@@ -5,6 +5,7 @@ namespace Databases.AutoGenerates
 {
     public abstract class DatabaseTemplateGeneratorBase : TemplateGenerator
     {
+        protected const string TypeNameBoolean = "BOOLEAN";
         protected string DatabaseName { get; private set; }
         
         public DatabaseTemplateGeneratorBase(string outputFolderPath, string outputFilePath, string databaseName)
@@ -24,5 +25,13 @@ namespace Databases.AutoGenerates
             yield return ("##COPYCONST##", "Additional Copy Constructor");
             yield return ("##ORIGINAL##", "Class-specific Codes");
         }
+        
+        protected Dictionary<string, string> typeReplaceDict = new Dictionary<string, string>() {
+            { "INTEGER" , "int" },
+            { "TEXT"    , "string" },
+            { "REAL"    , "double" },
+            { TypeNameBoolean , "bool" },
+            { "VARCHAR" , "string" },
+        };
     }
 }

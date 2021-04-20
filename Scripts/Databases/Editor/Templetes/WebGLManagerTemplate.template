@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
+#region Additional usings
+##USINGS##
+#endregion Additional usings
+
+namespace Databases.#DATABASENAME# 
+{
+    public class #DATABASENAME#DBManager 
+    {
+        public WebGLJsonDatabase #DATABASENAME#DB { get; private set; }
+##DAO_PROPERTIES##
+        public #DATABASENAME#DBManager() 
+        {
+            #DATABASENAME#DB = new WebGLJsonDatabase();
+        }
+        
+        public async UniTask<bool> FetchDatabase()
+        {
+            RegisterTables();
+            return await MasterDB.Fetch();
+        }
+        
+        public void Scan() 
+        {
+##DAO_INIT_REGION##
+        }
+
+        #region Class-specific Codes
+##ORIGINAL##
+        #endregion Class-specific Codes
+
+    }
+}

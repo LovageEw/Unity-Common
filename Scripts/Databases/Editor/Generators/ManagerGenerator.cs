@@ -35,7 +35,7 @@ namespace Databases.AutoGenerates {
             return propertyString;
         }
 
-        string GenerateInitCode(string tableName) {
+        protected virtual string GenerateInitCode(string tableName) {
             return
                 "            " + tableName.ToCamelCase() + "DAO = new " + tableName.ToCamelCase() + "DAO();\r\n" +
                 "            " + tableName.ToCamelCase() + "DAO.Init("+ DatabaseName + "DB);\r\n";

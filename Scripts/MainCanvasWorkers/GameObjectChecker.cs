@@ -7,8 +7,8 @@ using System.IO;
 namespace Generals {
     public class GameObjectChecker : MonoBehaviour {
 
-        void Awake() {
-
+        void Awake()
+        {
             if (GameObject.FindObjectOfType<TopMostCanvas>() == null) {
                 Instantiate(Resources.Load("TopMostCanvas"));
             }
@@ -16,6 +16,5 @@ namespace Generals {
                 Instantiate(Resources.Load("Manager"));
             }
         }
-        
     }
 }

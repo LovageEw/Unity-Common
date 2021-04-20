@@ -7,7 +7,8 @@ namespace Databases.AutoGenerates {
 
     public enum DatabaseType {
         Master,
-        Transaction
+        Transaction,
+        WebGL,
     }
 
     public enum DatabaseReloadType {

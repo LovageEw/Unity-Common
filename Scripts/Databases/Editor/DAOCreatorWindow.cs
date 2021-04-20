@@ -82,6 +82,7 @@ namespace Databases.AutoGenerates
 
             var db = new DBForDAOCreator(databaseName, assetPath);
             var dao = new DAOCreator();
+            dao.DatabaseType = databaseType;
             dao.ResourcePath = AssetDatabase.GetAssetPath(database).Split('/').SkipWhile(x => x != "Resources").Skip(1)
                 .Aggregate((a, b) => a + "\\" + b);
 
